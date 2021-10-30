@@ -4,8 +4,6 @@ public class AUCCalculator
 {
   private static String fileName;
   private static String fileType;
-  private static double posCount;
-  private static double negCount;
   private static double minRecall = 0.0;
 
   public static boolean DEBUG = false;
