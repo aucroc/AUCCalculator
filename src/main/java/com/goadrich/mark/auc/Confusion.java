@@ -53,9 +53,6 @@
 /*     */
 /*     */
 /*     */   public void sort() {
-/* 104 */     if (AUCCalculator.DEBUG) {
-/* 105 */       System.out.println("--- Sorting the datapoints !!! ---");
-/*     */     }
 /*     */
 /*     */
 /* 109 */     if (size() == 0) {
@@ -103,9 +100,6 @@
 /*     */
 /*     */
 /*     */   public void interpolate() {
-/* 154 */     if (AUCCalculator.DEBUG) {
-/* 155 */       System.out.println("--- Interpolating New Points ---");
-/*     */     }
 /*     */
 /*     */
 /* 159 */     if (size() == 0) {
@@ -148,9 +142,6 @@
 /*     */
 /*     */
 /*     */   public double calculateAUCPR(double paramDouble) {
-/* 199 */     if (AUCCalculator.DEBUG) {
-/* 200 */       System.out.println("--- Calculating AUC-PR ---");
-/*     */     }
 /*     */
 /*     */
 /* 204 */     if (paramDouble < 0.0D || paramDouble > 1.0D) {
@@ -225,9 +216,6 @@
 /*     */
 /*     */
 /*     */   public double calculateAUCROC() {
-/* 276 */     if (AUCCalculator.DEBUG) {
-/* 277 */       System.out.println("--- Calculating AUC-ROC ---");
-/*     */     }
 /*     */
 /*     */
 /* 281 */     if (size() == 0) {

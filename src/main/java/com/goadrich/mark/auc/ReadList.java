@@ -54,13 +54,6 @@
 /* 156 */           linkedList.add(new ClassSort(d1, j));
 /*     */
 /*     */
-/*     */
-/* 160 */           if (AUCCalculator.DEBUG);
-/*     */
-/*     */
-/* 163 */           if (AUCCalculator.DEBUG);
-/*     */
-/*     */
 /*     */         }
 /* 167 */         catch (NumberFormatException numberFormatException) {
 /*     */

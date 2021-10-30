@@ -6,8 +6,6 @@ public class AUCCalculator
   private static String fileType;
   private static double minRecall = 0.0;
 
-  public static boolean DEBUG = false;
-
   public static void main(String[] paramArrayOfString)
   {
     // TODO(hayesall): My unsafe refactor introduced nulls
