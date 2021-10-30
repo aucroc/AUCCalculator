@@ -1,47 +1,61 @@
-/*    */ package com.goadrich.mark.auc;
-/*    */
-/*    */
-/*    */
-/*    */
-/*    */
-/*    */
-/*    */
-/*    */ public class ClassSort
-/*    */   implements Comparable
-/*    */ {
-/*    */   private double val;
-/*    */   private int classification;
-/*    */
-/*    */   public ClassSort(double paramDouble, int paramInt) {
-/* 16 */     this.val = paramDouble;
-/* 17 */     this.classification = paramInt;
-/*    */   }
-/*    */
-/*    */   public int getClassification() {
-/* 21 */     return this.classification;
-/*    */   }
-/*    */
-/*    */   public double getProb() {
-/* 25 */     return this.val;
-/*    */   }
-/*    */
-/*    */   public int compareTo(Object paramObject) {
-/* 29 */     double d = ((ClassSort)paramObject).getProb();
-/* 30 */     if (this.val < d) {
-/* 31 */       return -1;
-/*    */     }
-/* 33 */     if (this.val > d) {
-/* 34 */       return 1;
-/*    */     }
-/*    */
-/* 37 */     int i = ((ClassSort)paramObject).getClassification();
-/* 38 */     if (i == this.classification) {
-/* 39 */       return 0;
-/*    */     }
-/* 41 */     if (this.classification > i) {
-/* 42 */       return -1;
-/*    */     }
-/*    */
-/* 45 */     return 1;
-/*    */   }
-/*    */ }
+package com.goadrich.mark.auc;
+
+public class ClassSort implements Comparable
+{
+
+  // TODO(hayesall): Get rid of the getter pattern.
+
+  private double probability;
+  private int classification;
+
+  public ClassSort(double probability, int classification)
+  {
+    this.probability = probability;
+    this.classification = classification;
+  }
+
+  public int getClassification()
+  {
+    return this.classification;
+  }
+
+  public double getProb()
+  {
+    return this.probability;
+  }
+
+  public int compareTo(Object paramObject)
+  {
+
+    // TODO(hayesall): Assert Object is of type ClassSort, compare common types.
+
+    // TODO(hayesall): The conditional logic could probably be simplified here.
+
+    double d = ((ClassSort)paramObject).getProb();
+
+    if (this.probability < d) {
+      return -1;
+    }
+
+    if (this.probability > d) {
+      return 1;
+    }
+
+    int i = ((ClassSort)paramObject).getClassification();
+
+    if (i == this.classification) {
+      return 0;
+    }
+    if (this.classification > i) {
+      return -1;
+    }
+
+    return 1;
+  }
+
+  public String toString()
+  {
+    return "(" + this.probability + "," + this.classification + ")";
+  }
+
+}
