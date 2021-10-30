@@ -29,7 +29,7 @@
 /*     */
 /*     */
 /*     */
-/*     */   public static Confusion readFile(String paramString1, String paramString2) {
+/*     */   public static Confusion readFile(String paramString1) {
 /* 133 */     byte b1 = 0;
 /* 134 */     byte b2 = 0;
 /* 135 */     byte b3 = 0;
