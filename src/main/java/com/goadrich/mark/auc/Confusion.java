@@ -40,50 +40,6 @@
 /*     */
 /*     */
 /*     */
-/*     */   public void addPRPoint(double paramDouble1, double paramDouble2) throws NumberFormatException {
-/*  44 */     if (paramDouble1 > 1.0D || paramDouble1 < 0.0D || paramDouble2 > 1.0D || paramDouble2 < 0.0D) {
-/*  45 */       throw new NumberFormatException();
-/*     */     }
-/*     */
-/*  48 */     double d1 = paramDouble1 * this.totPos;
-/*  49 */     double d2 = (d1 - paramDouble2 * d1) / paramDouble2;
-/*     */
-/*     */
-/*  52 */     PNPoint pNPoint = new PNPoint(d1, d2);
-/*  53 */     if (!contains(pNPoint)) {
-/*  54 */       add(pNPoint);
-/*     */     }
-/*     */   }
-/*     */
-/*     */
-/*     */
-/*     */
-/*     */
-/*     */
-/*     */
-/*     */
-/*     */
-/*     */   public void addROCPoint(double paramDouble1, double paramDouble2) throws NumberFormatException {
-/*  67 */     if (paramDouble1 > 1.0D || paramDouble1 < 0.0D || paramDouble2 > 1.0D || paramDouble2 < 0.0D) {
-/*  68 */       throw new NumberFormatException();
-/*     */     }
-/*     */
-/*  71 */     double d1 = paramDouble2 * this.totPos;
-/*  72 */     double d2 = paramDouble1 * this.totNeg;
-/*     */
-/*  74 */     PNPoint pNPoint = new PNPoint(d1, d2);
-/*  75 */     if (!contains(pNPoint)) {
-/*  76 */       add(pNPoint);
-/*     */     }
-/*     */   }
-/*     */
-/*     */
-/*     */
-/*     */
-/*     */
-/*     */
-/*     */
-/*     */
 /*     */
 /*     */   public void addPoint(double paramDouble1, double paramDouble2) throws NumberFormatException {
 /*  89 */     if (paramDouble1 < 0.0D || paramDouble1 > this.totPos || paramDouble2 < 0.0D || paramDouble2 > this.totNeg) {
