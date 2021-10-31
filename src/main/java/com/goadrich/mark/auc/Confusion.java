@@ -67,10 +67,10 @@
 /* 118 */       arrayOfPNPoint[b1++] = elementAt(0);
 /* 119 */       removeElementAt(0);
 /*     */     }
-/* 121 */     Arrays.sort((Object[])arrayOfPNPoint);
-/* 122 */     for (byte b2 = 0; b2 < arrayOfPNPoint.length; b2++) {
-/* 123 */       add(arrayOfPNPoint[b2]);
-/*     */     }
+/* 121 */     Arrays.sort(arrayOfPNPoint);
+
+              this.addAll(Arrays.asList(arrayOfPNPoint));
+
 /*     */
 /*     */
 /* 127 */     PNPoint pNPoint1 = elementAt(0);
