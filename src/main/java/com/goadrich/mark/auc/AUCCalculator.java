@@ -2,8 +2,6 @@ package com.goadrich.mark.auc;
 
 public class AUCCalculator
 {
-  private static String fileName;
-  private static double minRecall = 0.0;
 
   public static void main(String[] paramArrayOfString)
   {
@@ -13,8 +11,8 @@ public class AUCCalculator
     //    string "list" passed as an argument, but a refactor removed this.
 
     // TODO(hayesall): My unsafe refactor introduced nulls
-    fileName = paramArrayOfString[0];
-    minRecall = Double.parseDouble(paramArrayOfString[2]);
+    String fileName = paramArrayOfString[0];
+    double minRecall = Double.parseDouble(paramArrayOfString[2]);
 
     assert minRecall >= 0.0;
     assert minRecall <= 1.0;
