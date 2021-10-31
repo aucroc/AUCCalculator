@@ -12,8 +12,8 @@
 /*     */ public class Confusion
 /*     */   extends Vector<PNPoint>
 /*     */ {
-/*     */   private double totPos;
-/*     */   private double totNeg;
+/*     */   private final double totPos;
+/*     */   private final double totNeg;
 /*     */
 /*     */   public Confusion(double paramDouble1, double paramDouble2) {
 /*  23 */     if (paramDouble1 < 1.0D || paramDouble2 < 1.0D) {
