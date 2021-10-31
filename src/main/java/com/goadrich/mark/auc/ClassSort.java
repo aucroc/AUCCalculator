@@ -1,15 +1,19 @@
 package com.goadrich.mark.auc;
 
-public class ClassSort implements Comparable
+public class ClassSort implements Comparable<ClassSort>
 {
 
   // TODO(hayesall): Get rid of the getter pattern.
 
-  private double probability;
-  private int classification;
+  private final double probability;
+  private final int classification;
 
   public ClassSort(double probability, int classification)
   {
+    // TODO(hayesall): There are some invariants that might be worth enforcing.
+    //    e.g. 0.0 <= probability <= 1.0
+    //    e.g. classification in {0, 1}
+
     this.probability = probability;
     this.classification = classification;
   }
@@ -24,14 +28,10 @@ public class ClassSort implements Comparable
     return this.probability;
   }
 
-  public int compareTo(Object paramObject)
+  public int compareTo(ClassSort other)
   {
 
-    // TODO(hayesall): Assert Object is of type ClassSort, compare common types.
-
-    // TODO(hayesall): The conditional logic could probably be simplified here.
-
-    double d = ((ClassSort)paramObject).getProb();
+    double d = other.probability;
 
     if (this.probability < d) {
       return -1;
@@ -41,16 +41,7 @@ public class ClassSort implements Comparable
       return 1;
     }
 
-    int i = ((ClassSort)paramObject).getClassification();
-
-    if (i == this.classification) {
-      return 0;
-    }
-    if (this.classification > i) {
-      return -1;
-    }
-
-    return 1;
+    return Integer.compare(other.classification, this.classification);
   }
 
   public String toString()
