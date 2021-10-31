@@ -1,9 +1,9 @@
 package com.goadrich.mark.auc;
 
-public class PNPoint implements Comparable
+public class PNPoint implements Comparable<PNPoint>
 {
-  private double pos;
-  private double neg;
+  private final double pos;
+  private final double neg;
 
   // TODO(hayesall): Refactor out the getter pattern.
 
@@ -36,41 +36,18 @@ public class PNPoint implements Comparable
     return "(" + this.pos + "," + this.neg + ")";
   }
 
-  public boolean equals(Object paramObject)
+  public int compareTo(PNPoint other)
   {
-    if (paramObject instanceof PNPoint) {
-      PNPoint pNPoint = (PNPoint)paramObject;
-
-      if (Math.abs(this.pos - pNPoint.pos) > 0.001) {
-        return false;
-      }
-      if (Math.abs(this.neg - pNPoint.neg) > 0.001) {
-        return false;
-      }
-      return true;
-    }
-    return false;
-  }
-
-  public int compareTo(Object paramObject)
-  {
-    if (paramObject instanceof PNPoint)
+    if (other != null)
     {
-      PNPoint pNPoint = (PNPoint)paramObject;
 
-      if (this.pos - pNPoint.pos > 0.0) {
+      if (this.pos - other.pos > 0.0) {
         return 1;
       }
-      if (this.pos - pNPoint.pos < 0.0) {
+      if (this.pos - other.pos < 0.0) {
         return -1;
       }
-      if (this.neg - pNPoint.neg > 0.0) {
-        return 1;
-      }
-      if (this.neg - pNPoint.neg < 0.0) {
-        return -1;
-      }
-      return 0;
+      return Double.compare(this.neg - other.neg, 0.0);
     }
     return -1;
   }
