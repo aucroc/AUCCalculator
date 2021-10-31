@@ -246,12 +246,14 @@
 /*     */   }
 /*     */
 /*     */
-/*     */   public String toString() {
-/* 444 */     String str = "";
-/* 445 */     str = str + "TotPos: " + this.totPos + ", TotNeg: " + this.totNeg + "\n";
-/* 446 */     for (byte b = 0; b < size(); b++) {
-/* 447 */       str = str + elementAt(b) + "\n";
-/*     */     }
-/* 449 */     return str;
-/*     */   }
-/*     */ }
+
+    public String toString() {
+        StringBuilder str = new StringBuilder("TotalPos: " + this.totPos + ", TotalNeg: " + this.totNeg + "\n");
+        for (byte b = 0; b < size(); b++) {
+            str.append(elementAt(b)).append("\n");
+        }
+        return str.toString();
+    }
+
+
+}
