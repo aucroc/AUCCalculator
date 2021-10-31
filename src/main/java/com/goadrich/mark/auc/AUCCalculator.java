@@ -18,7 +18,10 @@ public class AUCCalculator
     assert minRecall <= 1.0;
 
     Confusion confusion = ReadList.readFile(fileName);
-    confusion.calculateAUCPR(minRecall);
-    confusion.calculateAUCROC();
+    double aucpr = confusion.calculateAUCPR(minRecall);
+    double aucroc = confusion.calculateAUCROC();
+
+    System.out.println("Area Under the Curve for Precision - Recall is " + aucpr);
+    System.out.println("Area Under the Curve for ROC is " + aucroc);
   }
 }

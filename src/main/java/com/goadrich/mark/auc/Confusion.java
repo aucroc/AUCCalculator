@@ -205,7 +205,6 @@
 /* 262 */       d2 = d5;
 /* 263 */       d3 = d6;
 /*     */     }
-/* 265 */     System.out.println("Area Under the Curve for Precision - Recall is " + d4);
 /*     */
 /* 267 */     return d4;
 /*     */   }
@@ -243,7 +242,6 @@
 /* 303 */       d2 = d5;
 /*     */     }
 /* 305 */     d3 = 1.0D - d3;
-/* 306 */     System.out.println("Area Under the Curve for ROC is " + d3);
 /* 307 */     return d3;
 /*     */   }
 /*     */
