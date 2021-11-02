@@ -3,10 +3,8 @@ package com.goadrich.mark.auc;
 public class ClassSort implements Comparable<ClassSort>
 {
 
-  // TODO(hayesall): Get rid of the getter pattern.
-
-  private final double probability;
-  private final int classification;
+  public final double probability;
+  public final int classification;
 
   public ClassSort(double probability, int classification)
   {
@@ -18,29 +16,14 @@ public class ClassSort implements Comparable<ClassSort>
     this.classification = classification;
   }
 
-  public int getClassification()
-  {
-    return this.classification;
-  }
-
-  public double getProb()
-  {
-    return this.probability;
-  }
-
   public int compareTo(ClassSort other)
   {
-
-    double d = other.probability;
-
-    if (this.probability < d) {
+    if (this.probability < other.probability) {
       return -1;
     }
-
-    if (this.probability > d) {
+    if (this.probability > other.probability) {
       return 1;
     }
-
     return Integer.compare(other.classification, this.classification);
   }
 
@@ -48,5 +31,4 @@ public class ClassSort implements Comparable<ClassSort>
   {
     return "(" + this.probability + "," + this.classification + ")";
   }
-
 }

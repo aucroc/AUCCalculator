@@ -64,20 +64,20 @@ public class ReadList
         ClassSort[] arrayOfClassSort = convertList(linkedList);
         ArrayList<PNPoint> arrayList = new ArrayList<>();
 
-        double d = arrayOfClassSort[arrayOfClassSort.length - 1].getProb();
+        double d = arrayOfClassSort[arrayOfClassSort.length - 1].probability;
 
         byte b1 = 0;
         byte b2 = 0;
 
-        if (arrayOfClassSort[arrayOfClassSort.length - 1].getClassification() == 1) {
+        if (arrayOfClassSort[arrayOfClassSort.length - 1].classification == 1) {
             b1++;
         } else {
             b2++;
         }
 
         for (int i = arrayOfClassSort.length - 2; i >= 0; i--) {
-            double d1 = arrayOfClassSort[i].getProb();
-            int j = arrayOfClassSort[i].getClassification();
+            double d1 = arrayOfClassSort[i].probability;
+            int j = arrayOfClassSort[i].classification;
             System.out.println(d1 + " " + j);
             if (d1 != d) {
                 arrayList.add(new PNPoint(b1, b2));
