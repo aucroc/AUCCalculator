@@ -50,15 +50,15 @@ public class Confusion extends Vector<PNPoint>
     this.addAll(Arrays.asList(arrayOfPNPoint));
 
     PNPoint pNPoint1 = elementAt(0);
-    while (pNPoint1.getPos() < 0.001D && pNPoint1.getPos() > -0.001D) {
+    while (pNPoint1.pos < 0.001D && pNPoint1.pos > -0.001D) {
       removeElementAt(0);
       pNPoint1 = elementAt(0);
     }
 
-    double d = pNPoint1.getNeg() / pNPoint1.getPos();
+    double d = pNPoint1.neg / pNPoint1.pos;
 
     PNPoint pNPoint2 = new PNPoint(1.0D, d);
-    if (!contains(pNPoint2) && pNPoint1.getPos() > 1.0D) {
+    if (!contains(pNPoint2) && pNPoint1.pos > 1.0D) {
       insertElementAt(pNPoint2, 0);
     }
 
@@ -79,15 +79,15 @@ public class Confusion extends Vector<PNPoint>
       PNPoint pNPoint1 = elementAt(b);
       PNPoint pNPoint2 = elementAt(b + 1);
 
-      double d1 = pNPoint2.getPos() - pNPoint1.getPos();
-      double d2 = pNPoint2.getNeg() - pNPoint1.getNeg();
+      double d1 = pNPoint2.pos - pNPoint1.pos;
+      double d2 = pNPoint2.neg - pNPoint1.neg;
       double d3 = d2 / d1;
-      double d4 = pNPoint1.getPos();
-      double d5 = pNPoint1.getNeg();
+      double d4 = pNPoint1.pos;
+      double d5 = pNPoint1.neg;
 
-      while (Math.abs(pNPoint1.getPos() - pNPoint2.getPos()) > 1.001D) {
-        double d = d5 + (pNPoint1.getPos() - d4 + 1.0D) * d3;
-        PNPoint pNPoint = new PNPoint(pNPoint1.getPos() + 1.0D, d);
+      while (Math.abs(pNPoint1.pos - pNPoint2.pos) > 1.001D) {
+        double d = d5 + (pNPoint1.pos - d4 + 1.0D) * d3;
+        PNPoint pNPoint = new PNPoint(pNPoint1.pos + 1.0D, d);
         insertElementAt(pNPoint, ++b);
         pNPoint1 = pNPoint;
       }
@@ -112,7 +112,7 @@ public class Confusion extends Vector<PNPoint>
     PNPoint pNPoint2 = null;
 
     try {
-      while (pNPoint1.getPos() < d1) {
+      while (pNPoint1.pos < d1) {
         pNPoint2 = pNPoint1;
         pNPoint1 = elementAt(++b);
       }
@@ -121,24 +121,24 @@ public class Confusion extends Vector<PNPoint>
       System.exit(-1);
     }
 
-    double d2 = (pNPoint1.getPos() - d1) / this.totPos;
-    double d3 = pNPoint1.getPos() / (pNPoint1.getPos() + pNPoint1.getNeg());
+    double d2 = (pNPoint1.pos - d1) / this.totPos;
+    double d3 = pNPoint1.pos / (pNPoint1.pos + pNPoint1.neg);
     double d4 = d2 * d3;
 
     if (pNPoint2 != null) {
-      double d5 = pNPoint1.getPos() / this.totPos - pNPoint2.getPos() / this.totPos;
-      double d6 = pNPoint1.getPos() / (pNPoint1.getPos() + pNPoint1.getNeg()) - pNPoint2.getPos() / (pNPoint2.getPos() + pNPoint2.getNeg());
+      double d5 = pNPoint1.pos / this.totPos - pNPoint2.pos / this.totPos;
+      double d6 = pNPoint1.pos / (pNPoint1.pos + pNPoint1.neg) - pNPoint2.pos / (pNPoint2.pos + pNPoint2.neg);
       double d7 = d6 / d5;
-      double d8 = pNPoint2.getPos() / (pNPoint2.getPos() + pNPoint2.getNeg()) + d7 * (d1 - pNPoint2.getPos()) / this.totPos;
+      double d8 = pNPoint2.pos / (pNPoint2.pos + pNPoint2.neg) + d7 * (d1 - pNPoint2.pos) / this.totPos;
       double d9 = 0.5D * d2 * (d8 - d3);
       d4 += d9;
     }
 
-    d2 = pNPoint1.getPos() / this.totPos;
+    d2 = pNPoint1.pos / this.totPos;
     for (int i = b + 1; i < size(); i++) {
       PNPoint pNPoint = elementAt(i);
-      double d5 = pNPoint.getPos() / this.totPos;
-      double d6 = pNPoint.getPos() / (pNPoint.getPos() + pNPoint.getNeg());
+      double d5 = pNPoint.pos / this.totPos;
+      double d6 = pNPoint.pos / (pNPoint.pos + pNPoint.neg);
       double d7 = (d5 - d2) * d6;
       double d8 = 0.5D * (d5 - d2) * (d3 - d6);
       d4 += d7 + d8;
@@ -155,14 +155,14 @@ public class Confusion extends Vector<PNPoint>
       return 0.0D;
     }
     PNPoint pNPoint = elementAt(0);
-    double d1 = pNPoint.getPos() / this.totPos;
-    double d2 = pNPoint.getNeg() / this.totNeg;
+    double d1 = pNPoint.pos / this.totPos;
+    double d2 = pNPoint.neg / this.totNeg;
     double d3 = 0.5D * d1 * d2;
 
     for (byte b = 1; b < size(); b++) {
       PNPoint pNPoint1 = elementAt(b);
-      double d4 = pNPoint1.getPos() / this.totPos;
-      double d5 = pNPoint1.getNeg() / this.totNeg;
+      double d4 = pNPoint1.pos / this.totPos;
+      double d5 = pNPoint1.neg / this.totNeg;
       double d6 = (d4 - d1) * d5;
       double d7 = 0.5D * (d4 - d1) * (d5 - d2);
 

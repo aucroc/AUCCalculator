@@ -92,7 +92,7 @@ public class ReadList
         arrayList.add(new PNPoint(b1, b2));
         Confusion confusion = new Confusion(b1, b2);
         for (PNPoint pNPoint : arrayList) {
-            confusion.addPoint(pNPoint.getPos(), pNPoint.getNeg());
+            confusion.addPoint(pNPoint.pos, pNPoint.neg);
         }
 
         confusion.sort();

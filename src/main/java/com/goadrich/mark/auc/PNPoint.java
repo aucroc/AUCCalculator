@@ -2,10 +2,8 @@ package com.goadrich.mark.auc;
 
 public class PNPoint implements Comparable<PNPoint>
 {
-  private final double pos;
-  private final double neg;
-
-  // TODO(hayesall): Refactor out the getter pattern.
+  public final double pos;
+  public final double neg;
 
   public PNPoint(double pos, double neg)
   {
@@ -19,16 +17,6 @@ public class PNPoint implements Comparable<PNPoint>
       this.pos = pos;
       this.neg = neg;
     }
-  }
-
-  public double getPos()
-  {
-    return this.pos;
-  }
-
-  public double getNeg()
-  {
-    return this.neg;
   }
 
   public String toString()
