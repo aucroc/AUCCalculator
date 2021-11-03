@@ -14,8 +14,8 @@ public class ReadList
 
         ClassSort[] arrayOfClassSort = new ClassSort[paramLinkedList.size()];
 
-        for (byte b = 0; b < arrayOfClassSort.length; b++) {
-            arrayOfClassSort[b] = paramLinkedList.removeFirst();
+        for (int i = 0; i < arrayOfClassSort.length; i++) {
+            arrayOfClassSort[i] = paramLinkedList.removeFirst();
         }
         Arrays.sort(arrayOfClassSort);
         return arrayOfClassSort;
@@ -66,8 +66,8 @@ public class ReadList
 
         double d = arrayOfClassSort[arrayOfClassSort.length - 1].probability;
 
-        byte b1 = 0;
-        byte b2 = 0;
+        int b1 = 0;
+        int b2 = 0;
 
         if (arrayOfClassSort[arrayOfClassSort.length - 1].classification == 1) {
             b1++;

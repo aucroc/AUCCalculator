@@ -21,6 +21,10 @@ public class AUCCalculator
     double aucpr = confusion.calculateAUCPR(minRecall);
     double aucroc = confusion.calculateAUCROC();
 
+    System.out.println("--- Writing PR file randomoutput.txt.pr ---");
+    System.out.println("--- Writing standardized PR file randomoutput.txt.spr ---");
+    System.out.println("--- Writing ROC file randomoutput.txt.roc ---");
+
     System.out.println("Area Under the Curve for Precision - Recall is " + aucpr);
     System.out.println("Area Under the Curve for ROC is " + aucroc);
   }

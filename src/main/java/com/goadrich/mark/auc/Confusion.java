@@ -40,7 +40,7 @@ public class Confusion extends Vector<PNPoint>
     }
 
     PNPoint[] arrayOfPNPoint = new PNPoint[size()];
-    byte b1 = 0;
+    int b1 = 0;
     while (size() > 0) {
       arrayOfPNPoint[b1++] = elementAt(0);
       removeElementAt(0);
@@ -75,7 +75,7 @@ public class Confusion extends Vector<PNPoint>
       return;
     }
 
-    for (byte b = 0; b < size() - 1; b++) {
+    for (int b = 0; b < size() - 1; b++) {
       PNPoint pNPoint1 = elementAt(b);
       PNPoint pNPoint2 = elementAt(b + 1);
 
@@ -107,7 +107,7 @@ public class Confusion extends Vector<PNPoint>
     }
 
     double d1 = paramDouble * this.totPos;
-    byte b = 0;
+    int b = 0;
     PNPoint pNPoint1 = elementAt(b);
     PNPoint pNPoint2 = null;
 
@@ -159,8 +159,8 @@ public class Confusion extends Vector<PNPoint>
     double d2 = pNPoint.neg / this.totNeg;
     double d3 = 0.5D * d1 * d2;
 
-    for (byte b = 1; b < size(); b++) {
-      PNPoint pNPoint1 = elementAt(b);
+    for (int i = 1; i < size(); i++) {
+      PNPoint pNPoint1 = elementAt(i);
       double d4 = pNPoint1.pos / this.totPos;
       double d5 = pNPoint1.neg / this.totNeg;
       double d6 = (d4 - d1) * d5;
@@ -177,8 +177,8 @@ public class Confusion extends Vector<PNPoint>
   public String toString()
   {
     StringBuilder str = new StringBuilder("TotalPos: " + this.totPos + ", TotalNeg: " + this.totNeg + "\n");
-    for (byte b = 0; b < size(); b++) {
-      str.append(elementAt(b)).append("\n");
+    for (int i = 0; i < size(); i++) {
+      str.append(elementAt(i)).append("\n");
     }
     return str.toString();
   }
