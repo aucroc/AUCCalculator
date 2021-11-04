@@ -17,8 +17,8 @@ def fuzz():
 
         generate_output_file(i + 5)
 
-        out0 = run_jar_file("original-auc.jar", 1.0)
-        out1 = run_jar_file("target/auc-0.2.1-jar-with-dependencies.jar", 1.0)
+        out0 = run_jar_file("original-auc.jar", 0.0)
+        out1 = run_jar_file("build/libs/auc-0.3.0.jar", 0.0)
 
         if out0.stdout != out1.stdout:
             print(f"stdout differed at iteration, {i}")
