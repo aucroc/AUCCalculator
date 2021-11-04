@@ -1,5 +1,6 @@
 package com.goadrich.mark.auc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -18,6 +19,78 @@ public class Confusion extends Vector<PNPoint>
        this.totPos = paramDouble1;
        this.totNeg = paramDouble2;
     }
+  }
+
+  /**
+   * Return a Confusion instance from `y_prob_pred` and `y_true` arrays.
+   *
+   * @param y_prob_pred Predicted probability of example being true.
+   * @param y_true True label for example.
+   * @return A Confusion instance
+   *
+   * Examples
+   * --------
+   *
+   * ```java
+   * Confusion confusion = Confusion.fromArrays(
+   *    new double[] {0.9, 0.8, 0.7, 0.6, 0.55, 0.54, 0.53, 0.52, 0.51, 0.505},
+   *    new int[] {1, 1, 0, 1, 1, 1, 0, 0, 1, 0}
+   * };
+   *
+   * double aucpr = confusion.calculateAUCPR(0.0);
+   * double aucroc = confusion.calculateAUCROC();
+   * ```
+   */
+  public static Confusion fromPredictions(double[] y_prob_pred, int[] y_true)
+  {
+
+    if (y_prob_pred.length != y_true.length) {
+      throw new RuntimeException("Arrays must have the same length");
+    }
+
+    ClassSort[] arrayOfClassSort = new ClassSort[y_prob_pred.length];
+    for (int i = 0; i < y_prob_pred.length; i++) {
+      arrayOfClassSort[i] = new ClassSort(y_prob_pred[i], y_true[i]);
+    }
+    Arrays.sort(arrayOfClassSort);
+
+    // TODO(hayesall): This is copied from the `ReadList.readFile` method.
+    ArrayList<PNPoint> arrayList = new ArrayList<>();
+
+    double d = arrayOfClassSort[arrayOfClassSort.length - 1].probability;
+
+    int b1 = 0;
+    int b2 = 0;
+
+    if (arrayOfClassSort[arrayOfClassSort.length - 1].classification == 1) {
+      b1++;
+    } else {
+      b2++;
+    }
+
+    for (int i = arrayOfClassSort.length - 2; i >= 0; i--) {
+      double d1 = arrayOfClassSort[i].probability;
+      int j = arrayOfClassSort[i].classification;
+      System.out.println(d1 + " " + j);
+      if (d1 != d) {
+        arrayList.add(new PNPoint(b1, b2));
+      }
+      d = d1;
+      if (j == 1) {
+        b1++;
+      } else {
+        b2++;
+      }
+    }
+    arrayList.add(new PNPoint(b1, b2));
+    Confusion confusion = new Confusion(b1, b2);
+    for (PNPoint pNPoint : arrayList) {
+      confusion.addPoint(pNPoint.pos, pNPoint.neg);
+    }
+
+    confusion.sort();
+    confusion.interpolate();
+    return confusion;
   }
 
   public void addPoint(double paramDouble1, double paramDouble2) throws NumberFormatException
@@ -127,9 +200,10 @@ public class Confusion extends Vector<PNPoint>
 
     if (pNPoint2 != null) {
       double d5 = pNPoint1.pos / this.totPos - pNPoint2.pos / this.totPos;
-      double d6 = pNPoint1.pos / (pNPoint1.pos + pNPoint1.neg) - pNPoint2.pos / (pNPoint2.pos + pNPoint2.neg);
+      double d10 = pNPoint2.pos / (pNPoint2.pos + pNPoint2.neg);
+      double d6 = d3 - d10;
       double d7 = d6 / d5;
-      double d8 = pNPoint2.pos / (pNPoint2.pos + pNPoint2.neg) + d7 * (d1 - pNPoint2.pos) / this.totPos;
+      double d8 = d10 + d7 * (d1 - pNPoint2.pos) / this.totPos;
       double d9 = 0.5D * d2 * (d8 - d3);
       d4 += d9;
     }

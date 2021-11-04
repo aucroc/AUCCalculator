@@ -18,6 +18,14 @@ public class AUCCalculator
     assert minRecall <= 1.0;
 
     Confusion confusion = ReadList.readFile(fileName);
+
+    /*
+    // TODO(hayesall): API might look something like this.
+    double[] y_pred = new double[]{0.8, 0.9, 0.7, 0.6, 0.55, 0.54, 0.53, 0.52, 0.51, 0.505};
+    int[] y_true = new int[]{1, 1, 0, 1, 1, 1, 0, 0, 1, 0};
+    Confusion confusion = Confusion.fromPredictions(y_pred, y_true);
+     */
+
     double aucpr = confusion.calculateAUCPR(minRecall);
     double aucroc = confusion.calculateAUCROC();
 
