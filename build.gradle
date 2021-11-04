@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'junit:junit:4.13.2'
+}
+
+test {
+  finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+  dependsOn test
+}
+
+jar {
+  manifest {
+    attributes(
+      'Main-Class': 'com.goadrich.mark.auc.AUCCalculator'
+    )
+  }
+}
+
+group = 'com.goadrich.mark.auc'
+version = '0.3.0'
+description = 'auc'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
