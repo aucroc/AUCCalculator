@@ -1,5 +1,7 @@
 package com.goadrich.mark.auc;
 
+import java.util.Objects;
+
 public class PNPoint implements Comparable<PNPoint>
 {
   public final double pos;
@@ -22,6 +24,21 @@ public class PNPoint implements Comparable<PNPoint>
   public String toString()
   {
     return "(" + this.pos + "," + this.neg + ")";
+  }
+
+  @Override
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    PNPoint pnPoint = (PNPoint) o;
+    return Double.compare(pnPoint.pos, pos) == 0 && Double.compare(pnPoint.neg, neg) == 0;
+  }
+
+  @Override
+  public int hashCode()
+  {
+    return Objects.hash(pos, neg);
   }
 
   public int compareTo(PNPoint other)
