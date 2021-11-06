@@ -33,6 +33,12 @@ version = '0.3.0'
 description = 'auc'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
+apply plugin: 'java'
+
+javadoc {
+  source = sourceSets.main.allJava
+}
+
 publishing {
     publications {
         maven(MavenPublication) {
