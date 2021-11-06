@@ -1,6 +1,6 @@
 package com.goadrich.mark.auc;
 
-public class ClassSort implements Comparable<ClassSort>
+class ClassSort implements Comparable<ClassSort>
 {
 
   public final double probability;
@@ -8,9 +8,12 @@ public class ClassSort implements Comparable<ClassSort>
 
   public ClassSort(double probability, int classification)
   {
-    // TODO(hayesall): There are some invariants that might be worth enforcing.
-    //    e.g. 0.0 <= probability <= 1.0
-    //    e.g. classification in {0, 1}
+    if (probability < 0.0 || probability > 1.0) {
+      throw new NumberFormatException("Probabilities must be between 0.0 and 1.0");
+    }
+    if (classification != 0 && classification != 1) {
+      throw new NumberFormatException("Binary classification must be represented with 0 or 1");
+    }
 
     this.probability = probability;
     this.classification = classification;
