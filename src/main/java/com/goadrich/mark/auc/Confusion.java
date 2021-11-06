@@ -1,45 +1,51 @@
 package com.goadrich.mark.auc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Vector;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.*;
 
+/**
+ * Confusion object for generating AUCROC/AUCPR.
+ */
 public class Confusion extends Vector<PNPoint>
 {
   private final double totPos;
   private final double totNeg;
 
-  public Confusion(double paramDouble1, double paramDouble2)
+  public Confusion(double totalPositives, double totalNegatives)
   {
-     if (paramDouble1 < 1.0D || paramDouble2 < 1.0D) {
+     if (totalPositives < 1.0D || totalNegatives < 1.0D) {
        this.totPos = 1.0D;
        this.totNeg = 1.0D;
-       System.err.println("ERROR: " + paramDouble1 + "," + paramDouble2 + " - " + "Defaulting Confusion to 1,1");
+       System.err.println("ERROR: " + totalPositives + "," + totalNegatives + " - " + "Defaulting Confusion to 1,1");
     } else {
-       this.totPos = paramDouble1;
-       this.totNeg = paramDouble2;
+       this.totPos = totalPositives;
+       this.totNeg = totalNegatives;
     }
   }
 
   /**
-   * Return a Confusion instance from `y_prob_pred` and `y_true` arrays.
+   * Create a Confusion instance from <code>y_prob_pred</code> and
+   * <code>y_true</code> arrays.
    *
    * @param y_prob_pred Predicted probability of example being true.
    * @param y_true True label for example.
    * @return A Confusion instance
    *
-   * Examples
-   * --------
+   * <p>
+   * <b>Examples</b>
    *
-   * ```java
-   * Confusion confusion = Confusion.fromArrays(
-   *    new double[] {0.9, 0.8, 0.7, 0.6, 0.55, 0.54, 0.53, 0.52, 0.51, 0.505},
-   *    new int[] {1, 1, 0, 1, 1, 1, 0, 0, 1, 0}
-   * };
+   *<pre>{@code
+   *Confusion confusion = Confusion.fromArrays(
+   *   new double[] {0.9, 0.8, 0.7, 0.6, 0.55, 0.54, 0.53, 0.52, 0.51, 0.505},
+   *   new int[] {1, 1, 0, 1, 1, 1, 0, 0, 1, 0}
+   *);
    *
-   * double aucpr = confusion.calculateAUCPR(0.0);
-   * double aucroc = confusion.calculateAUCROC();
-   * ```
+   *double aucpr = confusion.calculateAUCPR(0.0);
+   *double aucroc = confusion.calculateAUCROC();
+   *}</pre>
    */
   public static Confusion fromPredictions(double[] y_prob_pred, int[] y_true)
   {
@@ -52,60 +58,61 @@ public class Confusion extends Vector<PNPoint>
     for (int i = 0; i < y_prob_pred.length; i++) {
       arrayOfClassSort[i] = new ClassSort(y_prob_pred[i], y_true[i]);
     }
-    Arrays.sort(arrayOfClassSort);
 
-    // TODO(hayesall): This is copied from the `ReadList.readFile` method.
-    ArrayList<PNPoint> arrayList = new ArrayList<>();
-
-    double d = arrayOfClassSort[arrayOfClassSort.length - 1].probability;
-
-    int b1 = 0;
-    int b2 = 0;
-
-    if (arrayOfClassSort[arrayOfClassSort.length - 1].classification == 1) {
-      b1++;
-    } else {
-      b2++;
-    }
-
-    for (int i = arrayOfClassSort.length - 2; i >= 0; i--) {
-      double d1 = arrayOfClassSort[i].probability;
-      int j = arrayOfClassSort[i].classification;
-      System.out.println(d1 + " " + j);
-      if (d1 != d) {
-        arrayList.add(new PNPoint(b1, b2));
-      }
-      d = d1;
-      if (j == 1) {
-        b1++;
-      } else {
-        b2++;
-      }
-    }
-    arrayList.add(new PNPoint(b1, b2));
-    Confusion confusion = new Confusion(b1, b2);
-    for (PNPoint pNPoint : arrayList) {
-      confusion.addPoint(pNPoint.pos, pNPoint.neg);
-    }
-
-    confusion.sort();
-    confusion.interpolate();
-    return confusion;
+    return classSortToConfusion(arrayOfClassSort);
   }
 
-  public void addPoint(double paramDouble1, double paramDouble2) throws NumberFormatException
+  /**
+   * Create a <code>Confusion</code> instance from a delimited file of
+   * probabilities and true labels.
+   *
+   * @param fileName Path to read file from.
+   * @return A Confusion instance
+   *
+   * <p>
+   * <b>Examples</b>
+   */
+  public static Confusion fromFile(String fileName) throws FileNotFoundException {
+
+    LinkedList<ClassSort> linkedList = new LinkedList<>();
+
+    try {
+      BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+
+      while (bufferedReader.ready()) {
+        String line = bufferedReader.readLine();
+        StringTokenizer tokenizer = new StringTokenizer(line, "\t ,");
+
+        try {
+          double probability = Double.parseDouble(tokenizer.nextToken());
+          int label = Integer.parseInt(tokenizer.nextToken());
+          linkedList.add(new ClassSort(probability, label));
+        } catch (NumberFormatException numberFormatException) {
+          System.err.println("...skipping bad input line (bad numbers)");
+        } catch (NoSuchElementException noSuchElementException) {
+          System.err.println("...skipping bad input line (missing data)");
+        }
+      }
+    } catch (FileNotFoundException fileNotFoundException) {
+      System.err.println("ERROR: File " + fileName + " not found - exiting...");
+      throw new FileNotFoundException("File not found.");
+    } catch (IOException iOException) {
+      System.err.println("ERROR: IO Exception in file " + fileName + " - exiting...");
+      System.exit(-1);
+    }
+
+    ClassSort[] arrayOfClassSort = linkedList.toArray(new ClassSort[0]);
+    return classSortToConfusion(arrayOfClassSort);
+  }
+
+  private void addPoint(PNPoint pnpoint)
   {
-     if (paramDouble1 < 0.0D || paramDouble1 > this.totPos || paramDouble2 < 0.0D || paramDouble2 > this.totNeg) {
-       throw new NumberFormatException();
-     }
-
-     PNPoint pNPoint = new PNPoint(paramDouble1, paramDouble2);
-     if (!contains(pNPoint)) {
-       add(pNPoint);
+    if (!contains(pnpoint)) {
+      add(pnpoint);
     }
   }
 
-  public void sort()
+  private void sort()
   {
     if (size() == 0) {
       System.err.println("ERROR: No data to sort....");
@@ -135,13 +142,10 @@ public class Confusion extends Vector<PNPoint>
       insertElementAt(pNPoint2, 0);
     }
 
-    pNPoint2 = new PNPoint(this.totPos, this.totNeg);
-    if (!contains(pNPoint2)) {
-      add(pNPoint2);
-    }
+    addPoint(new PNPoint(this.totPos, this.totNeg));
   }
 
-  public void interpolate()
+  private void interpolate()
   {
     if (size() == 0) {
       System.err.println("ERROR: No data to interpolate....");
@@ -159,6 +163,7 @@ public class Confusion extends Vector<PNPoint>
       double d5 = pNPoint1.neg;
 
       while (Math.abs(pNPoint1.pos - pNPoint2.pos) > 1.001D) {
+        // TODO(hayesall): When is it possible for this to occur? Highly imbalanced data?
         double d = d5 + (pNPoint1.pos - d4 + 1.0D) * d3;
         PNPoint pNPoint = new PNPoint(pNPoint1.pos + 1.0D, d);
         insertElementAt(pNPoint, ++b);
@@ -167,9 +172,15 @@ public class Confusion extends Vector<PNPoint>
     }
   }
 
-  public double calculateAUCPR(double paramDouble)
+  /**
+   * Calculate the area under the precision-recall curve.
+   *
+   * @param minRecall Minimum recall required.
+   * @return AUCPR value.
+   */
+  public double calculateAUCPR(double minRecall)
   {
-    if (paramDouble < 0.0D || paramDouble > 1.0D) {
+    if (minRecall < 0.0D || minRecall > 1.0D) {
       System.err.println("ERROR: invalid minRecall, must be between 0 and 1 - returning 0");
       return 0.0D;
     }
@@ -179,7 +190,7 @@ public class Confusion extends Vector<PNPoint>
       return 0.0D;
     }
 
-    double d1 = paramDouble * this.totPos;
+    double d1 = minRecall * this.totPos;
     int b = 0;
     PNPoint pNPoint1 = elementAt(b);
     PNPoint pNPoint2 = null;
@@ -199,6 +210,7 @@ public class Confusion extends Vector<PNPoint>
     double d4 = d2 * d3;
 
     if (pNPoint2 != null) {
+      // TODO(hayesall): This only seems to occur in a fairly narrow range of minRecall values.
       double d5 = pNPoint1.pos / this.totPos - pNPoint2.pos / this.totPos;
       double d10 = pNPoint2.pos / (pNPoint2.pos + pNPoint2.neg);
       double d6 = d3 - d10;
@@ -222,6 +234,10 @@ public class Confusion extends Vector<PNPoint>
     return d4;
   }
 
+  /**
+   * Calculate the area under the ROC curve.
+   * @return AUCROC value.
+   */
   public double calculateAUCROC()
   {
     if (size() == 0) {
@@ -246,6 +262,52 @@ public class Confusion extends Vector<PNPoint>
     }
     d3 = 1.0D - d3;
     return d3;
+  }
+
+  private static Confusion classSortToConfusion(ClassSort[] arrayOfClassSort) {
+    Arrays.sort(arrayOfClassSort);
+
+    int b1 = 0;
+    int b2 = 0;
+
+    if (arrayOfClassSort[arrayOfClassSort.length - 1].classification == 1) {
+      b1++;
+    } else {
+      b2++;
+    }
+
+    ArrayList<PNPoint> arrayList = new ArrayList<>();
+    double d = arrayOfClassSort[arrayOfClassSort.length - 1].probability;
+
+    for (int i = arrayOfClassSort.length - 2; i >= 0; i--) {
+
+      double probability = arrayOfClassSort[i].probability;
+      int classification = arrayOfClassSort[i].classification;
+
+      System.out.println(probability + " " + classification);
+
+      if (probability != d) {
+        arrayList.add(new PNPoint(b1, b2));
+      }
+      d = probability;
+
+      if (classification == 1) {
+        b1++;
+      } else {
+        b2++;
+      }
+    }
+
+    arrayList.add(new PNPoint(b1, b2));
+
+    Confusion confusion = new Confusion(b1, b2);
+    for (PNPoint pNPoint : arrayList) {
+      confusion.addPoint(pNPoint);
+    }
+
+    confusion.sort();
+    confusion.interpolate();
+    return confusion;
   }
 
   public String toString()

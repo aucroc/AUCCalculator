@@ -1,39 +1,45 @@
 package com.goadrich.mark.auc;
 
+import java.io.FileNotFoundException;
+
+/**
+ * Main method class for running from command line.
+ */
 public class AUCCalculator
 {
 
-  public static void main(String[] paramArrayOfString)
-  {
+  public static void main(String[] args) {
 
-    // Usage: to stay compatible with the old API at the moment, this uses
-    //    arguments at position [0] and [2]. Previously, [1] had to have the
-    //    string "list" passed as an argument, but a refactor removed this.
+    if (args.length != 3) {
+      System.err.println("Error. Must pass: [filename] list [minRecall]");
+      System.err.println("   java -jar auc.jar testsetlist.txt list 0.0");
+      System.exit(2);
+    }
 
-    // TODO(hayesall): My unsafe refactor introduced nulls
-    String fileName = paramArrayOfString[0];
-    double minRecall = Double.parseDouble(paramArrayOfString[2]);
+    String fileName = args[0];
+    double minRecall = Double.parseDouble(args[2]);
 
-    assert minRecall >= 0.0;
-    assert minRecall <= 1.0;
+    if (minRecall < 0.0 || minRecall > 1.0) {
+      System.err.println("minRecall must be between 0.0 and 1.0");
+      System.exit(-1);
+    }
 
-    Confusion confusion = ReadList.readFile(fileName);
+    try {
+      Confusion confusion = Confusion.fromFile(fileName);
 
-    /*
-    // TODO(hayesall): API might look something like this.
-    double[] y_pred = new double[]{0.8, 0.9, 0.7, 0.6, 0.55, 0.54, 0.53, 0.52, 0.51, 0.505};
-    int[] y_true = new int[]{1, 1, 0, 1, 1, 1, 0, 0, 1, 0};
-    Confusion confusion = Confusion.fromPredictions(y_pred, y_true);
-     */
+      double aucpr = confusion.calculateAUCPR(minRecall);
+      double aucroc = confusion.calculateAUCROC();
 
-    double aucpr = confusion.calculateAUCPR(minRecall);
-    double aucroc = confusion.calculateAUCROC();
+      System.out.println("--- Writing PR file randomoutput.txt.pr ---");
+      System.out.println("--- Writing standardized PR file randomoutput.txt.spr ---");
+      System.out.println("--- Writing ROC file randomoutput.txt.roc ---");
 
-    System.out.println("--- Writing PR file randomoutput.txt.pr ---");
-    System.out.println("--- Writing standardized PR file randomoutput.txt.spr ---");
-    System.out.println("--- Writing ROC file randomoutput.txt.roc ---");
+      System.out.println("Area Under the Curve for Precision - Recall is " + aucpr);
+      System.out.println("Area Under the Curve for ROC is " + aucroc);
 
-    System.out.println("Area Under the Curve for Precision - Recall is " + aucpr);
-    System.out.println("Area Under the Curve for ROC is " + aucroc);
+    } catch (FileNotFoundException fileNotFoundException) {
+      System.err.println("File not found.");
+      System.exit(-1);
+    }
   }
 }

@@ -1,22 +1,12 @@
 package com.goadrich.mark.auc;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
-public class ClassSortTest extends TestCase
+public class ClassSortTest
 {
-  public ClassSortTest(String testName)
-  {
-    super(testName);
-  }
 
-  public static Test suite()
-  {
-    return new TestSuite(ClassSortTest.class);
-  }
-
+  @Test
   public void testInitializeClassSort1()
   {
     ClassSort cls = new ClassSort(0.5, 1);
@@ -24,6 +14,7 @@ public class ClassSortTest extends TestCase
     assertEquals(cls.classification, 1);
   }
 
+  @Test
   public void testInitializeClassSort0()
   {
     ClassSort cls = new ClassSort(0.75, 0);
@@ -31,6 +22,7 @@ public class ClassSortTest extends TestCase
     assertEquals(cls.classification, 0);
   }
 
+  @Test
   public void testClassSorttoString()
   {
     ClassSort cls = new ClassSort(0.5, 1);
