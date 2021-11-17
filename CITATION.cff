@@ -1,0 +1,76 @@
+cff-version: 1.2.0
+
+title: AUC Calculator
+message: >-
+  Please cite this software using the metadata from
+  'preferred-citation'.
+
+type: software
+authors:
+  - given-names: Jesse
+    family-names: Davis
+    affiliation: KU Leuven
+    email: jesse.davis@cs.kuleuven.be
+  - given-names: Mark
+    family-names: Goadrich
+    email: goadrich@hendrix.edu
+    affiliation: Hendrix College
+  - given-names: Alexander
+    family-names: Hayes
+    email: hayesall@iu.edu
+    affiliation: Indiana University Bloomington
+identifiers:
+  - type: doi
+    value: 10.1145/1143844.1143874
+    description: >-
+      The relationship between Precision-Recall and
+      ROC curves
+repository-code: 'https://github.com/srlearn/AUCCalculator'
+abstract: >-
+  Receiver Operator Characteristic (ROC) curves are
+  commonly used to present results for binary
+  decision problems in machine learning. However,
+  when dealing with highly skewed datasets,
+  Precision-Recall (PR) curves give a more
+  informative picture of an algorithm's performance.
+  We show that a deep connection exists between ROC
+  space and PR space, such that a curve dominates in
+  ROC space if and only if it dominates in PR space.
+  A corollary is the notion of an achievable PR
+  curve, which has properties much like the convex
+  hull in ROC space; we show an efficient algorithm
+  for computing this curve. Finally, we also note
+  differences in the two types of curves are
+  significant for algorithm design. For example, in
+  PR space it is incorrect to linearly interpolate
+  between points. Furthermore, algorithms that
+  optimize the area under the ROC curve are not
+  guaranteed to optimize the area under the PR curve.
+keywords:
+  - metrics
+  - machine-learning
+license: MIT
+
+preferred-citation:
+  type: proceedings
+  authors:
+    - family-names: "Davis"
+      given-names: "Jesse"
+    - family-names: "Goadrich"
+      given-names: "Mark"
+  title: "The relationship between Precision-Recall and ROC curves"
+  collection-title: "Proceedings of the 23rd International Conference on Machine Learning"
+  conference:
+    name: "ICML 2006"
+  publisher:
+    name: "Association for Computing Machinery"
+    address: "New York, NY, USA"
+  location:
+    name: "23rd International Conference on Machine Learning"
+    city: "Pittsburgh, Pennsylvania"
+    country: "US"
+  doi: "10.1145/1143844.1143874"
+  isbn: "1595933832"
+  start: 233
+  end: 240
+  year: 2006

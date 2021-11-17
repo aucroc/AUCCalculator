@@ -1,0 +1,51 @@
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.junit.jupiter:junit-jupiter:5.7.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+jacocoTestReport {
+  dependsOn test
+}
+
+jar {
+  manifest {
+    attributes(
+      'Main-Class': 'org.srlearn.auc.AUCCalculator'
+    )
+  }
+}
+
+group = 'org.srlearn'
+version = '0.3.0'
+description = 'auc'
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+
+apply plugin: 'java'
+
+javadoc {
+  source = sourceSets.main.allJava
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
+}

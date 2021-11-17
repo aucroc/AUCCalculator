@@ -38,55 +38,63 @@ BiBTeX:
 }
 ```
 
-## Overview
+## Usage Notes
 
-The first step was to convert the jar file back to source files, which roughly
-followed these steps:
+The only prerequisite is Java, and this should be compatible with Java version 8 or higher.
+Check if it's available on your path and install if it isn't:
 
-1. Download a copy of [auc.jar](http://mark.goadrich.com/programs/AUC/)
-2. Decompile with "Java Decompiler" (http://java-decompiler.github.io/)
-3. The decompiler seems to have done a pretty good job,
-  but it missed an import in `ReadList.java`:
+```bash
+java -version
+```
 
-  ```diff
-  + import java.io.File;
-  ```
+### Linux / MacOS
 
-The source files are committed to this repository following some reorganizing.
+Build the project:
 
-1. The project can be built as a [Maven Package](https://maven.apache.org/):
+```bash
+./gradlew build
+```
 
-  ```bash
-  mvn package
-  ```
+Use the commandline interface to run a sample file:
 
-2. Run on the included `testsetlist.txt` file:
+```bash
+java -jar build/libs/auc-0.3.0.jar history/testsetlist.txt list 0.0
+```
 
-  ```bash
-  java -jar target/auc-0.2.1-jar-with-dependencies.jar testsetlist.txt list
-  ```
+Check tests:
 
-3. This produces the following outputs, and we can inspect three created files:
-  `testsetlist.txt.pr`, `testsetlist.txt.roc`, and `testsetlist.txt.spr`.
+```bash
+xdg-open build/reports/tests/test/index.html
+```
 
-  ```console
-  0.8 1
-  0.7 0
-  0.6 1
-  0.55 1
-  0.54 1
-  0.53 0
-  0.52 0
-  0.51 1
-  0.505 0
-  --- Writing PR file testsetlist.txt.pr ---
-  --- Writing standardized PR file testsetlist.txt.spr ---
-  --- Writing ROC file testsetlist.txt.roc ---
-  Area Under the Curve for Precision - Recall is 0.8243055555555555
-  Area Under the Curve for ROC is 0.75
-  ```
+View code coverage results:
 
-7. The outputs match the original `auc.jar`, so we might consider this as
-  evidence that we successfully reproduced the source code. However, this
-  argument is *necessary* but not *sufficient*, it does not deal with potential
-  corner cases.
+```bash
+xdg-open build/reports/jacoco/test/html/index.html
+```
+
+### Windows (PowerShell environment):
+
+Build the project:
+
+```powershell
+.\gradlew.bat build
+```
+
+Use the commandline interface to run a sample file:
+
+```powershell
+java -jar .\build\libs\auc-0.3.0.jar .\history\testsetlist.txt list 0.0
+```
+
+Check tests:
+
+```powershell
+Invoke-Item .\build\reports\tests\test\index.html
+```
+
+View code coverage results:
+
+```powershell
+Invoke-Item .\build\reports\jacoco\test\html\index.html
+```
