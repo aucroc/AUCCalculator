@@ -26,12 +26,12 @@ jacocoTestReport {
 jar {
   manifest {
     attributes(
-      'Main-Class': 'com.goadrich.mark.auc.AUCCalculator'
+      'Main-Class': 'org.srlearn.auc.AUCCalculator'
     )
   }
 }
 
-group = 'com.goadrich.mark.auc'
+group = 'org.srlearn'
 version = '0.3.0'
 description = 'auc'
 java.sourceCompatibility = JavaVersion.VERSION_1_8
