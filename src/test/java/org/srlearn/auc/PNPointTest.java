@@ -1,4 +1,4 @@
-package com.goadrich.mark.auc;
+package org.srlearn.auc;
 
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;

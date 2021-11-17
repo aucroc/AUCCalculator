@@ -1,4 +1,4 @@
-package com.goadrich.mark.auc;
+package org.srlearn.auc;
 
 class ClassSort implements Comparable<ClassSort>
 {

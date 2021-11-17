@@ -1,4 +1,4 @@
-package com.goadrich.mark.auc;
+package org.srlearn.auc;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
