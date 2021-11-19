@@ -52,7 +52,7 @@ keywords:
 license: MIT
 
 preferred-citation:
-  type: proceedings
+  type: conference-paper
   authors:
     - family-names: "Davis"
       given-names: "Jesse"
