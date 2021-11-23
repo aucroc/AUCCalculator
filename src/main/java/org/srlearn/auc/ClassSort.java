@@ -30,6 +30,15 @@ class ClassSort implements Comparable<ClassSort>
     return Integer.compare(other.classification, this.classification);
   }
 
+  @Override
+  public boolean equals(Object o)
+  {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ClassSort cls = (ClassSort) o;
+    return Double.compare(cls.probability, probability) == 0 && Integer.compare(cls.classification, classification) == 0;
+  }
+
   public String toString()
   {
     return "(" + this.probability + "," + this.classification + ")";
