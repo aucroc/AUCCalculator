@@ -1,11 +1,15 @@
 // Copyright © 2021 Alexander L. Hayes
 // MIT License
 
-use lib_auccalc::add_two;
+use lib_auccalc::confusion::Confusion;
 
 fn main() {
 
-    println!("2 + 2 = {}", add_two(2, 2));
+    let confusion = Confusion::from_predictions(
+        vec![0.5, 0.7, 0.1, 0.8],
+        vec![0, 1, 1, 0],
+    );
 
-    println!("{}", "Hello World.");
+    println!("AUCPR:  {}", confusion.calculate_auc_pr(0.0));
+    println!("AUCROC: {}", confusion.calculate_aucroc());
 }
