@@ -5,7 +5,16 @@
 import random
 
 
-def generate_output_file(size: int) -> None:
+def generate_output_file(size: int):
+
+    probas, labels = [], []
+
+    for _ in range(size):
+        probas.append(random.random())
+        labels.append(random.randint(0, 1))
+
     with open("randomoutput.txt", "w") as fh:
-        for s in range(size):
-            fh.write(str(random.random()) + " " + str(random.randint(0, 1)) + "\n")
+        for (p, l) in zip(probas, labels):
+            fh.write(str(p) + " " + str(l) + "\n")
+
+    return probas, labels

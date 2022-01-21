@@ -2,9 +2,7 @@
 // MIT License
 
 use pyo3::prelude::*;
-
-pub mod confusion;
-use confusion::Confusion;
+use lib_auccalc::confusion::Confusion;
 
 #[pyclass]
 struct ConfusionPy {
@@ -34,4 +32,24 @@ impl ConfusionPy {
 fn auccalc(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<ConfusionPy>()?;
     Ok(())
+}
+
+
+#[cfg(test)]
+mod lib_auccalc_py_tests {
+
+    extern crate float_cmp;
+    use float_cmp::approx_eq;
+
+    use crate::Confusion;
+
+    #[test]
+    fn test_confusion_from_lib_auccalc() {
+        let ypred = vec![0.9, 0.8, 0.7, 0.6, 0.55, 0.54, 0.53, 0.52, 0.51, 0.505];
+        let ytrue = vec![1, 1, 0, 1, 1, 1, 0, 0, 1, 0];
+        let confusion = Confusion::from_predictions(ypred, ytrue);
+
+        assert!(approx_eq!(f64, confusion.calculate_auc_pr(0.0), 0.8243055555555555, epsilon = 0.0001));
+        assert!(approx_eq!(f64, confusion.calculate_aucroc(), 0.75, epsilon = 0.0001));
+    }
 }
