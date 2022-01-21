@@ -1,5 +1,9 @@
 name: "Java CI"
-on: [push, pull_request]
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
@@ -22,6 +26,6 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Setup and execute Gradle test
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v1
         with:
           arguments: test
