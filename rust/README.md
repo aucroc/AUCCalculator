@@ -13,5 +13,12 @@ pip install maturin
 Create a development build:
 
 ```console
-maturin develop
+cd lib-auccalc-py/
+maturin develop --release
+```
+
+Check that it's available:
+
+```python
+from auccalc.auccalc import ConfusionPy
 ```
