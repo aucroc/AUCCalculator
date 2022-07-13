@@ -1,14 +1,25 @@
 // Copyright © 2021 Alexander L. Hayes
 // MIT License
 
-#[derive(Debug, PartialOrd, PartialEq)]
+use std::cmp::Ordering;
+
+#[derive(Debug, PartialEq)]
 struct ClassSort {
     probability: f64,
     classification: i64,
+}
 
-    // TODO(hayesall): The `classification` was encoded as `int` in Java.
-    //      It feels more natural for them to be booleans, but it feels
-    //      unnatural to have them two different ways.
+impl PartialOrd for ClassSort {
+
+    fn partial_cmp(&self, other: &ClassSort) -> Option<Ordering> {
+        if self.probability < other.probability {
+            return Some(Ordering::Less);
+        }
+        if self.probability > other.probability {
+            return Some(Ordering::Greater);
+        }
+        Some(Ordering::Equal)
+    }
 }
 
 impl ClassSort {
