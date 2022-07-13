@@ -12,7 +12,6 @@ pub struct Confusion {
 }
 
 impl Confusion {
-
     fn from_pnpoints(tot_pos: f64, tot_neg: f64, cfs: Vec<PNPoint>) -> Confusion {
         // TODO(hayesall): Find a better name, or make this the default for new struct initialization.
         Confusion {
@@ -23,7 +22,6 @@ impl Confusion {
     }
 
     fn new(tot_pos: f64, tot_neg: f64) -> Confusion {
-
         // TODO(hayesall): This kind of makes sense for backwards compatability, but having fewer
         //      than 1 positive/negative examples seems like the problem should be undefined.
 
@@ -31,14 +29,14 @@ impl Confusion {
             return Confusion {
                 tot_pos: 1.0,
                 tot_neg: 1.0,
-                cfs: Vec::new()
-            }
+                cfs: Vec::new(),
+            };
         }
 
         Confusion {
             tot_pos,
             tot_neg,
-            cfs: Vec::new()
+            cfs: Vec::new(),
         }
     }
 
@@ -79,7 +77,7 @@ impl Confusion {
         }
 
         d2 = pnpoint1.pos / self.tot_pos;
-        for i in b+1 .. self.cfs.len() {
+        for i in b + 1..self.cfs.len() {
             let pnpoint = self.cfs[i];
             let d5 = pnpoint.pos / self.tot_pos;
             let d6 = pnpoint.pos / (pnpoint.pos + pnpoint.neg);
@@ -101,7 +99,7 @@ impl Confusion {
         let mut d2 = pnpoint.neg / self.tot_neg;
         let mut d3 = 0.5 * d1 * d2;
 
-        for i in 1 .. self.cfs.len() {
+        for i in 1..self.cfs.len() {
             let pnpoint1 = self.cfs[i];
             let d4 = pnpoint1.pos / self.tot_pos;
             let d5 = pnpoint1.neg / self.tot_neg;
@@ -133,7 +131,6 @@ impl Confusion {
 
     fn add_point(&mut self, pnpoint: &PNPoint) {
         if !(self.cfs.contains(pnpoint)) {
-
             // TODO(hayesall): This feels like a weird check. It almost seems like `cfs`
             //      wants to be a set object that avoids duplicate points being added.
 
@@ -144,7 +141,6 @@ impl Confusion {
     }
 
     fn sort_copy(&self) -> Vec<PNPoint> {
-
         // TODO(hayesall): The only use of `self` is:
         //      1. Cloning the `cfs` vector
         //      2. checking the value of `tot_pos` and `tot_neg`
@@ -186,7 +182,6 @@ impl Confusion {
 }
 
 fn interpolate(pnts: Vec<PNPoint>) -> Vec<PNPoint> {
-
     if pnts.len() == 0 {
         panic!("Cannot interpolate 0 points, something is wrong.");
     }
@@ -196,7 +191,7 @@ fn interpolate(pnts: Vec<PNPoint>) -> Vec<PNPoint> {
 
     while b < out.len() - 1 {
         let mut pnt1 = out[b];
-        let pnt2 = out[b+1];
+        let pnt2 = out[b + 1];
 
         let d1 = pnt2.pos - pnt1.pos;
         let d2 = pnt2.neg - pnt1.neg;
@@ -219,7 +214,6 @@ fn interpolate(pnts: Vec<PNPoint>) -> Vec<PNPoint> {
 }
 
 fn classsort_to_confusion(mut class_sort: Vec<ClassSort>) -> Confusion {
-
     class_sort.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
     let mut b1 = 0;
@@ -234,8 +228,7 @@ fn classsort_to_confusion(mut class_sort: Vec<ClassSort>) -> Confusion {
     let mut pnpoints: Vec<PNPoint> = Vec::new();
     let mut d = class_sort[class_sort.len() - 1].probability;
 
-    for i in (0 .. class_sort.len() - 1).rev() {
-
+    for i in (0..class_sort.len() - 1).rev() {
         let probability = class_sort[i].probability;
         let classification = class_sort[i].classification;
 
@@ -271,7 +264,6 @@ fn classsort_to_confusion(mut class_sort: Vec<ClassSort>) -> Confusion {
     return confusion2;
 }
 
-
 #[cfg(test)]
 mod confusion_tests {
 
@@ -286,8 +278,18 @@ mod confusion_tests {
         let ytrue = vec![1, 1, 0, 1, 1, 1, 0, 0, 1, 0];
         let confusion = Confusion::from_predictions(ypred, ytrue);
 
-        assert!(approx_eq!(f64, confusion.calculate_auc_pr(0.0), 0.8243055555555555, epsilon = 0.0001));
-        assert!(approx_eq!(f64, confusion.calculate_aucroc(), 0.75, epsilon = 0.0001));
+        assert!(approx_eq!(
+            f64,
+            confusion.calculate_auc_pr(0.0),
+            0.8243055555555555,
+            epsilon = 0.0001
+        ));
+        assert!(approx_eq!(
+            f64,
+            confusion.calculate_aucroc(),
+            0.75,
+            epsilon = 0.0001
+        ));
     }
 
     #[test]
@@ -296,8 +298,18 @@ mod confusion_tests {
         let ytest = vec![0, 0, 0, 0, 1];
         let confusion = Confusion::from_predictions(ypred, ytest);
 
-        assert!(approx_eq!(f64, confusion.calculate_auc_pr(0.0), 0.2, epsilon = 0.0001));
-        assert!(approx_eq!(f64, confusion.calculate_aucroc(), 0.5, epsilon = 0.0001));
+        assert!(approx_eq!(
+            f64,
+            confusion.calculate_auc_pr(0.0),
+            0.2,
+            epsilon = 0.0001
+        ));
+        assert!(approx_eq!(
+            f64,
+            confusion.calculate_aucroc(),
+            0.5,
+            epsilon = 0.0001
+        ));
     }
 
     #[test]
@@ -306,8 +318,18 @@ mod confusion_tests {
         let ytest = vec![1, 1, 0, 1, 1, 1, 0, 0, 1, 0];
         let confusion = Confusion::from_predictions(ypred, ytest);
 
-        assert!(approx_eq!(f64, confusion.calculate_auc_pr(0.5), 0.3729166666666667, epsilon = 0.0001));
-        assert!(approx_eq!(f64, confusion.calculate_aucroc(), 0.75, epsilon = 0.0001));
+        assert!(approx_eq!(
+            f64,
+            confusion.calculate_auc_pr(0.5),
+            0.3729166666666667,
+            epsilon = 0.0001
+        ));
+        assert!(approx_eq!(
+            f64,
+            confusion.calculate_aucroc(),
+            0.75,
+            epsilon = 0.0001
+        ));
     }
 
     #[test]
@@ -316,7 +338,17 @@ mod confusion_tests {
         let ytest = vec![1, 1, 0, 1, 1, 1, 0, 0, 1, 0];
         let confusion = Confusion::from_predictions(ypred, ytest);
 
-        assert!(approx_eq!(f64, confusion.calculate_auc_pr(1.0), 0.0, epsilon = 0.0001));
-        assert!(approx_eq!(f64, confusion.calculate_aucroc(), 0.75, epsilon = 0.0001));
+        assert!(approx_eq!(
+            f64,
+            confusion.calculate_auc_pr(1.0),
+            0.0,
+            epsilon = 0.0001
+        ));
+        assert!(approx_eq!(
+            f64,
+            confusion.calculate_aucroc(),
+            0.75,
+            epsilon = 0.0001
+        ));
     }
 }
