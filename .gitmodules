@@ -1,0 +1,3 @@
+[submodule "auc-calculator"]
+	path = auc-calculator
+	url = git@github.com:aucroc/auc-calculator
