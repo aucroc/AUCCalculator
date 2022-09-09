@@ -6,6 +6,32 @@ we have multiple versions produced during refactoring.
 How do we know that all of these are equivalent?
 We can *[fuzz test](https://en.wikipedia.org/wiki/Fuzzing)*.
 
+## Quickstart
+
+Compile and install the Rust implementation:
+
+```bash
+pip install maturin setuptools-rust
+cd auc-calculator/lib-auccalc-py
+maturin develop --release
+pip install -e .
+cd ../..
+```
+
+Compile the Java implementation:
+
+```bash
+./gradlew build
+```
+
+Run the fuzzer:
+
+```bash
+python -m fuzzer
+```
+
+## Overview
+
 The `AUCCalculator` should be deterministic: given the same inputs we expect
 it to produce the same outputs. So we might reveal errors by randomly generating
 inputs, passing the inputs into both versions, and observing the results.
