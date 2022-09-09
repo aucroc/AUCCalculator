@@ -134,6 +134,29 @@ public class PNPointTest
   }
 
   @Test
+  public void testSortPNPoint3()
+  {
+    PNPoint[] actual = {
+      new PNPoint(3.0, 2.0),
+      new PNPoint(2.0, 2.0),
+      new PNPoint(2.0, 1.0),
+      new PNPoint(1.0, 2.0),
+      new PNPoint(3.0, 1.0),
+    };
+
+    PNPoint[] expected = {
+      new PNPoint(1.0, 2.0),
+      new PNPoint(2.0, 1.0),
+      new PNPoint(2.0, 2.0),
+      new PNPoint(3.0, 1.0),
+      new PNPoint(3.0, 2.0),
+    };
+
+    Arrays.sort(actual);
+    assertArrayEquals(actual, expected);
+  }
+
+  @Test
   public void testCompareToPNPoints0()
   {
     PNPoint pnt1 = new PNPoint(1.0, 1.0);

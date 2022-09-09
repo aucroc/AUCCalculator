@@ -1,7 +1,8 @@
 package org.srlearn.auc;
 
+import java.util.Arrays;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ClassSortTest
 {
@@ -28,4 +29,25 @@ public class ClassSortTest
     ClassSort cls = new ClassSort(0.5, 1);
     assertEquals(cls.toString(), "(0.5,1)");
   }
+
+  @Test
+  public void testSortClassSort()
+  {
+
+    ClassSort[] actual = {
+      new ClassSort(0.5, 0),
+      new ClassSort(0.7, 0),
+      new ClassSort(0.6, 0),
+    };
+
+    ClassSort[] expected = {
+      new ClassSort(0.5, 0),
+      new ClassSort(0.6, 0),
+      new ClassSort(0.7, 0),
+    };
+
+    Arrays.sort(actual);
+    assertArrayEquals(actual, expected);
+  }
+
 }
