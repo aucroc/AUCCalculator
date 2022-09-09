@@ -77,20 +77,20 @@ public class Confusion extends Vector<PNPoint>
     LinkedList<ClassSort> linkedList = new LinkedList<>();
 
     try {
-      BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName));
+      try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
+        while (bufferedReader.ready()) {
+          String line = bufferedReader.readLine();
+          StringTokenizer tokenizer = new StringTokenizer(line, "\t ,");
 
-      while (bufferedReader.ready()) {
-        String line = bufferedReader.readLine();
-        StringTokenizer tokenizer = new StringTokenizer(line, "\t ,");
-
-        try {
-          double probability = Double.parseDouble(tokenizer.nextToken());
-          int label = Integer.parseInt(tokenizer.nextToken());
-          linkedList.add(new ClassSort(probability, label));
-        } catch (NumberFormatException numberFormatException) {
-          System.err.println("...skipping bad input line (bad numbers)");
-        } catch (NoSuchElementException noSuchElementException) {
-          System.err.println("...skipping bad input line (missing data)");
+          try {
+            double probability = Double.parseDouble(tokenizer.nextToken());
+            int label = Integer.parseInt(tokenizer.nextToken());
+            linkedList.add(new ClassSort(probability, label));
+          } catch (NumberFormatException numberFormatException) {
+            System.err.println("...skipping bad input line (bad numbers)");
+          } catch (NoSuchElementException noSuchElementException) {
+            System.err.println("...skipping bad input line (missing data)");
+          }
         }
       }
     } catch (FileNotFoundException fileNotFoundException) {
