@@ -1,7 +1,7 @@
 # Copyright © 2021 Alexander L. Hayes
 # MIT License
 
-from auccalc.auccalc import ConfusionPy
+from auccalculator import Confusion
 from .generate import generate_output_file
 import subprocess
 import sys
@@ -25,7 +25,7 @@ def fuzz():
         out0_aucpr = float(out0_utf8[0].split(" ")[-1])
         out0_aucro = float(out0_utf8[1].split(" ")[-1])
 
-        conf = ConfusionPy(probs, labels)
+        conf = Confusion(labels, probs)
         out2_aucpr = conf.aucpr(0.0)
         out2_aucro = conf.aucroc()
 
